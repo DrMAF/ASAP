@@ -1,4 +1,4 @@
-﻿namespace StockMarket.Configurations
+﻿namespace StockMarket
 {
     public class PolygonSettings
     {

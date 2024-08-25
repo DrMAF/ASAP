@@ -1,5 +1,6 @@
 ﻿using Core.Entities;
 using Core.Interfaces.Services;
+using Messaging.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using System.Text;
@@ -11,26 +12,30 @@ namespace BLL
         readonly UserManager<User> _userMangaer;
         readonly IPolygonNewsService _stockMarketService;
         readonly ILogger<NotificationService> _logger;
+        readonly IEmailService _emailService;
 
         public NotificationService(UserManager<User> userMangaer,
         IPolygonNewsService stockMarketService,
-        ILogger<NotificationService> logger)
+        ILogger<NotificationService> logger,
+        IEmailService emailService)
         {
             _userMangaer = userMangaer;
             _stockMarketService = stockMarketService;
             _logger = logger;
+            _emailService = emailService;
         }
 
-        public async Task SendEmailsToUsers(List<PolygonNews> newsList)
+        public async Task SendEmailsToUsersAsync(List<PolygonNews> newsList)
         {
             try
             {
                 var users = _userMangaer.Users.Select(usr => new { usr.FirstName, usr.Email }).ToList();
-                
-                string emailHtml =  FormatEmail(newsList);
+
+                string emailHtml = FormatEmail(newsList);
 
                 foreach (var user in users)
                 {
+                    await _emailService.SendEmailAsync("News summary", emailHtml, user.Email);
                 }
             }
             catch (Exception ex)
@@ -67,16 +72,6 @@ namespace BLL
             newsEmailTemplat = newsEmailTemplat.Replace("@NewsItemsTemplates", itemStringResult.ToString());
 
             return newsEmailTemplat;
-        }
-
-        private void FormatCommonEmail(List<PolygonNews> newsList)
-        {
-
-        }
-
-        private void FormatEmailForUser(string firstName)
-        {
-
         }
     }
 }

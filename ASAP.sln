@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BLL", "BLL\BLL.csproj", "{A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "API\API.csproj", "{12DED452-479A-4785-9EC1-F36C7CE87519}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockMarket", "StockMarket\StockMarket.csproj", "{5726FCF5-A0EB-45F6-AF0D-4DA1FF5F1E36}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StockMarket", "StockMarket\StockMarket.csproj", "{5726FCF5-A0EB-45F6-AF0D-4DA1FF5F1E36}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messaging", "Messaging\Messaging.csproj", "{DEFF3F56-86B7-49A5-9A67-E8805F6FA71B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{5726FCF5-A0EB-45F6-AF0D-4DA1FF5F1E36}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5726FCF5-A0EB-45F6-AF0D-4DA1FF5F1E36}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5726FCF5-A0EB-45F6-AF0D-4DA1FF5F1E36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DEFF3F56-86B7-49A5-9A67-E8805F6FA71B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEFF3F56-86B7-49A5-9A67-E8805F6FA71B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEFF3F56-86B7-49A5-9A67-E8805F6FA71B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DEFF3F56-86B7-49A5-9A67-E8805F6FA71B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

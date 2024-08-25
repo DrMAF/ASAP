@@ -2,7 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
 using Serilog.HttpClient.Extensions;
-using StockMarket.Configurations;
 using StockMarket.Interfaces;
 using StockMarket.Services;
 

@@ -4,6 +4,6 @@ namespace Core.Interfaces.Services
 {
     public interface INotificationService
     {
-        Task SendEmailsToUsers(List<PolygonNews> newsList);
+        Task SendEmailsToUsersAsync(List<PolygonNews> newsList);
     }
 }

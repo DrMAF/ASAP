@@ -1,7 +1,4 @@
 ﻿using Core.Interfaces.Services;
-using Core.ViewModels;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 
 namespace API.Endpoints
 {
@@ -14,14 +11,13 @@ namespace API.Endpoints
             return endpoint;
         }
 
-
         private static async Task<IResult> SendEmails(INotificationService notificationService, IPolygonNewsService polygonNewsService)
         {
             var news = polygonNewsService.GetAll().ToList();
 
-            var res = notificationService.SendEmailsToUsers(news);
+            await notificationService.SendEmailsToUsersAsync(news);
 
-            return Results.Ok(res);
+            return Results.Ok();
         }
     }
 }

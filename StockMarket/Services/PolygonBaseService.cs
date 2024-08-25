@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Options;
-using StockMarket.Configurations;
 using StockMarket.Interfaces;
 using StockMarket.ViewModels;
 
@@ -12,7 +11,8 @@ namespace StockMarket.Services
         readonly PolygonSettings _polygonConfiguration;
         readonly IPolygonProvider _polygonProvider;
 
-        public PolygonBaseService(IOptions<PolygonSettings> polygonConfiguration, IPolygonProvider polygonProvider)
+        public PolygonBaseService(IOptions<PolygonSettings> polygonConfiguration, 
+        IPolygonProvider polygonProvider)
         {
             _APIKey = string.Empty;
 

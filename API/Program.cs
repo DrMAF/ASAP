@@ -1,9 +1,8 @@
-using BLL;
-using Core.Interfaces;
 using DAL;
 using ASAP;
 using API.Endpoints;
 using Microsoft.EntityFrameworkCore;
+using Messaging;
 using StockMarket.Bootstrapper;
 using API.HostedServices;
 
@@ -23,7 +22,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services
     .ConfigureAuthorization(builder.Configuration).AddBusinessServices()
-    .AddPolygonProviderServices(builder.Configuration);
+    .AddPolygonProviderServices(builder.Configuration)
+    .AddMessagingServices(builder.Configuration);
 
 builder.Services.AddHostedService<PolygonNewsUpdateService>();
 

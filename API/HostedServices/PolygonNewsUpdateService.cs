@@ -28,13 +28,13 @@ namespace API.HostedServices
 
                     using IServiceScope scope = _serviceScopeFactory.CreateScope();
                     {
-                        var polygonNewsService = scope.ServiceProvider.GetRequiredService<IPolygonNewsService>();
+                        //var polygonNewsService = scope.ServiceProvider.GetRequiredService<IPolygonNewsService>();
 
-                        var newsUpdate = await polygonNewsService.SyncPolygonNews();
+                        //var newsUpdate = await polygonNewsService.SyncPolygonNews();
 
-                        var notificationService = scope.ServiceProvider.GetRequiredService<INotificationService>();
+                        //var notificationService = scope.ServiceProvider.GetRequiredService<INotificationService>();
 
-                        await notificationService.SendEmailsToUsers(newsUpdate);
+                        //await notificationService.SendEmailsToUsers(newsUpdate);
                     }
                 }
                 catch (Exception ex)
