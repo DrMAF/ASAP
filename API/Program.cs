@@ -51,6 +51,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapGroup("api/accounts").MapAccount();
-app.MapGroup("api/Polygon").MapPolygon();
+app.MapGroup("api/users").MapAccount();
+app.MapGroup("api/polygon").MapPolygon();
+
 app.Run();
