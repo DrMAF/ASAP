@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { User } from '../../../shared/models/user.model';
 import { UserService } from '../../../shared/services/user.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
@@ -14,8 +14,9 @@ import { FormsModule } from '@angular/forms';
 })
 export class UserDetailsComponent {
   @Input() viewMode = false;
-  @Output() changeViewMode = new EventEmitter<boolean>();
+  @Input() itemsCount = 0;
 
+  
   @Input() currentUser: User = {
     id: 0,
     firstName: "",
@@ -36,12 +37,6 @@ export class UserDetailsComponent {
     }
   }
 
-  onChangeViewMode(): void {
-    this.message = "";
-
-    this.changeViewMode.emit(false);
-  }
-
   getUser(id: string): void {
     this.userService.getById(id).subscribe({
       next: (data) => {
@@ -51,14 +46,36 @@ export class UserDetailsComponent {
     });
   }
 
+  onDeleteUser() {
+    let res = confirm("Are you sure you to delete this user?");
+
+    if (res) {
+      this.deleteUser();
+    }
+  }
+
+  onCancel() {
+    let res = confirm("Any modification will be lost. Are you sure?");
+
+    if (res) {
+      this.router.navigate(['/users']);
+    }
+  }
+
+
   updateUser(): void {
     this.message = "";
 
     this.userService.update(this.currentUser.id, this.currentUser).subscribe({
       next: (res) => {
         this.message = "The user was updated successfully.";
-        this.changeViewMode.emit(true);
 
+        alert("User updated successfully.");
+        this.router.navigate(['/users']);
+
+        //setInterval(() => {
+
+        //}, 1000);
       },
       error: (e) => {
         console.error(e);
@@ -70,6 +87,8 @@ export class UserDetailsComponent {
   deleteUser(): void {
     this.userService.delete(this.currentUser.id).subscribe({
       next: (res) => {
+        alert("User deleted.");
+
         this.router.navigate(['/users']);
       },
       error: (e) => console.error(e)

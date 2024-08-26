@@ -16,6 +16,8 @@ export class UsersListComponent implements OnInit {
 
   paginatedUsers?: PaginatedResult<User>;
 
+  itemsCount: number = 0;
+
   currentUser: User = {
     id: 0,
     firstName: "",
@@ -29,9 +31,6 @@ export class UsersListComponent implements OnInit {
   search: string = "";
   pageIndex: number = 1;
   pageSize: number = 10;
-
-  viewMode = true;
-
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
@@ -40,8 +39,9 @@ export class UsersListComponent implements OnInit {
 
   retrieveUsers(): void {
     this.userService.getAll(this.search, this.pageIndex, this.pageSize).subscribe({
-      next: (data) => {
+      next: (data: PaginatedResult<User>) => {
         this.paginatedUsers = data;
+        this.itemsCount = data?.items?.length;
       },
       error: (e) => console.error(e)
     });
@@ -64,11 +64,5 @@ export class UsersListComponent implements OnInit {
   setActiveUser(user: User, index: number): void {
     this.currentUser = user;
     this.userIndex = index;
-
-    this.viewMode = true;
-  }
-
-  switchMode(newViewMode: boolean): void{
-    this.viewMode = newViewMode;
   }
 }

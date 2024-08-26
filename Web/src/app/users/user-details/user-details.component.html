@@ -25,11 +25,9 @@
     </label>
     {{ currentUser.phoneNumber }}
   </div>
-  <button class="badge badge-danger mr-2" (click)="onChangeViewMode()">Edit</button>
-
-  <!--<a routerLink="/users/{{ currentUser.id }}">Edit</a>-->
+  <a routerLink="/users/{{ currentUser.id }}">Edit</a>
   }
-  @else{
+  @else if(itemsCount > 0){
   <div>
     <br />
     <p>Please click on a user to show details...</p>
@@ -59,9 +57,12 @@
       </div>
     </form>
 
-    <button class="badge badge-danger mr-2" (click)="deleteUser()">Delete</button>
+    <button class="badge badge-danger mr-2" (click)="onDeleteUser()">Delete</button>
 
     <button type="submit" class="badge badge-success mb-2" (click)="updateUser()">Update</button>
+
+    <button type="submit" class="badge badge-success mb-2" (click)="onCancel()">Cancel</button>
+
     <p>{{ message }}</p>
   </div>
 
