@@ -27,6 +27,14 @@ builder.Services
 
 builder.Services.AddHostedService<PolygonNewsUpdateService>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder =>
+        {
+            builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+        });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -44,7 +52,7 @@ using (var serviceScope = app.Services.GetService<IServiceScopeFactory>().Create
 
 
 app.UseHttpsRedirection();
-//app.UseCors();
+app.UseCors();
 
 app.UseAuthentication();
 app.UseAuthorization();

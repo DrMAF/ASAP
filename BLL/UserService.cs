@@ -15,23 +15,7 @@ namespace BLL
             _userManager = userManager;
         }
 
-        public async Task<IdentityResult> CreateUser(UserModel model)
-        {
-            User user = new User
-            {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                PhoneNumber = model.PhoneNumber,
-                Email = model.Email,
-                UserName = model.Email
-            };
-
-            var res = await _userManager.CreateAsync(user);
-
-            return res;
-        }
-
-        public async Task<PaginatedResult<User>> GetUsersPaginated(string search, int pageIndex = 1, int pageSize = 10)
+        public async Task<PaginatedResult<User>> GetPaginatedUsersAsync(string search, int pageIndex = 1, int pageSize = 10)
         {
             var users = _userManager.Users;
 
@@ -53,7 +37,36 @@ namespace BLL
             return new PaginatedResult<User>(result, pageIndex, totalPages);
         }
 
-        public async Task<IdentityResult> UpdateUser(UserModel model)
+        public async Task<User> GetUserByIdAsync(int userId)
+        {
+            if(userId <=0)
+            {
+                return null;
+            }
+
+            User user = await _userManager.FindByIdAsync(userId.ToString());
+
+            return user;
+        }
+        public async Task<IdentityResult> CreateUserAsync(UserModel model)
+        {
+            User user = new User
+            {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                PhoneNumber = model.PhoneNumber,
+                Email = model.Email,
+                UserName = model.Email
+            };
+
+            var res = await _userManager.CreateAsync(user);
+
+            return res;
+        }
+
+        
+
+        public async Task<IdentityResult> UpdateUserAsync(UserModel model)
         {
             var user = await _userManager.FindByIdAsync(model.Id.ToString());
 
@@ -73,7 +86,7 @@ namespace BLL
             return null;
         }
 
-        public async Task<IdentityResult> DeleteUser(int userId)
+        public async Task<IdentityResult> DeleteUserAsync(int userId)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
 

@@ -1,1 +1,30 @@
-<p>users-list works!</p>
+<div class="list row">
+  <div class="col-md-8">
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" placeholder="Search by title" [(ngModel)]="title" />
+      <div class="input-group-append">
+        <!--<button class="btn btn-outline-secondary" type="button" (click)="searchTitle()">
+          Search
+        </button>-->
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <h4>Users List</h4>
+    <ul class="list-group">
+      @if (paginatedUsers?.items) {
+      @for (item of paginatedUsers?.items; track item.id) {
+      <li class="list-group-item" [class.active]="item.id == userIndex" (click)="setActiveUser(item, item.id)">
+        {{ item.firstName }} {{ item.lastName }}
+      </li>
+      } @empty {
+      <li>There are no items.</li>
+      }
+      }
+    </ul>
+
+  </div>
+  <!--<div class="col-md-6">
+    <app-tutorial-details [viewMode]="true" [currentTutorial]="currentTutorial"></app-tutorial-details>
+  </div>-->
+</div>

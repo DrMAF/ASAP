@@ -1,20 +1,25 @@
-﻿using Core.Interfaces.Services;
+﻿using Core.Entities;
+using Core.Interfaces.Services;
 using Core.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Endpoints
 {
-    public static class AccountsEndpoints
+    public static class UsersEndpoints
     {
         public static IEndpointRouteBuilder MapAccount(this IEndpointRouteBuilder endpoint)
         {
-            endpoint.MapPost("get", GetUsers);
+            endpoint.MapGet("", GetUsers);
+            endpoint.MapGet("getById/{id}", GetUserById);
             endpoint.MapPost("create", AddUser);
-            endpoint.MapPost("update", UpdateUser);
-            endpoint.MapPost("delete", DeleteUser);
+            endpoint.MapPut("update", UpdateUser);
+            endpoint.MapDelete("delete", DeleteUser);
 
             return endpoint;
+
+
+
         }
 
         private static async Task<IResult> GetUsers(IUserService userService, string search = "", int pageIndex = 1, int pageSize = 10)
@@ -22,14 +27,21 @@ namespace API.Endpoints
             pageIndex = pageIndex < 1 ? 1 : pageIndex;
             pageSize = pageSize < 1 ? 1 : pageSize;
 
-            var users = await userService.GetUsersPaginated(search, pageIndex, pageSize);
+            var users = await userService.GetPaginatedUsersAsync(search, pageIndex, pageSize);
 
             return Results.Ok(users);
         }
 
+        private static async Task<IResult> GetUserById(int userId, IUserService userService)
+        {
+            User user = await userService.GetUserByIdAsync(userId);
+
+            return Results.Ok(user);
+        }
+
         private static async Task<IResult> AddUser(IUserService userService, [FromBody] UserModel model)
         {
-            IdentityResult res = await userService.CreateUser(model);
+            IdentityResult res = await userService.CreateUserAsync(model);
 
             if (res.Succeeded)
             {
@@ -49,7 +61,7 @@ namespace API.Endpoints
                 return Results.BadRequest("Id required");
             }
 
-            var res = await userService.UpdateUser(model);
+            var res = await userService.UpdateUserAsync(model);
 
             if (res.Succeeded)
             {
@@ -68,7 +80,7 @@ namespace API.Endpoints
                 return Results.BadRequest("Id required");
             }
 
-            var res = await userService.DeleteUser(userId);
+            var res = await userService.DeleteUserAsync(userId);
 
             if (res.Succeeded)
             {
