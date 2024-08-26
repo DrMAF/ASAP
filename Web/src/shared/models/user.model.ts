@@ -3,7 +3,7 @@ export class User {
   firstName: string = "";
   lastName: string = "";
   email: string = "";
-  phone: string = "";
+  phoneNumber: string = "";
 }
 
 export class PaginatedResult<T> {

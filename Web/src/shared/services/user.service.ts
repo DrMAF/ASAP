@@ -17,7 +17,7 @@ export class UserService {
       + "&pageIndex=" + pageIndex + "&pageSize=" + pageSize);
   }
 
-  get(id: any): Observable<User> {
+  getById(id: any): Observable<User> {
     return this.http.get<User>(`${baseUrl}/getById/${id}`);
   }
 

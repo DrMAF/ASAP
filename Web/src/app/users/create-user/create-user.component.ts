@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { User } from '../../../shared/models/user.model';
 import { UserService } from '../../../shared/services/user.service';
+import { FormsModule } from '@angular/forms';
+import { NgFor, NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-create-user',
   standalone: true,
-  imports: [],
+  imports: [FormsModule, NgIf, NgFor],
   templateUrl: './create-user.component.html',
   styleUrl: './create-user.component.css'
 })
@@ -16,7 +18,7 @@ export class CreateUserComponent {
     firstName: "",
     lastName: "",
     email: "",
-    phone: ""
+    phoneNumber: ""
   };
 
   submitted = false;
@@ -24,11 +26,12 @@ export class CreateUserComponent {
   constructor(private userService: UserService) { }
 
   saveUser(): void {
-    const data = {
+    const data: User = {
+      id: 0,
       firstName: this.user.firstName,
       lastName: this.user.lastName,
       email: this.user.email,
-      phone: this.user.phone
+      phoneNumber: this.user.phoneNumber
     };
 
     this.userService.create(data).subscribe({
@@ -48,7 +51,7 @@ export class CreateUserComponent {
       firstName: "",
       lastName: "",
       email: "",
-      phone: ""
+      phoneNumber: ""
     };
   }
 

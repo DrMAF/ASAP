@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { PaginatedResult, User } from '../../../shared/models/user.model';
 import { UserService } from '../../../shared/services/user.service';
 import { FormsModule } from '@angular/forms';
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
+import { UserDetailsComponent } from '../user-details/user-details.component';
 
 @Component({
   selector: 'app-users-list',
   standalone: true,
-  imports: [FormsModule, NgFor],
+  imports: [UserDetailsComponent, FormsModule, NgIf, NgFor],
   templateUrl: './users-list.component.html',
   styleUrl: './users-list.component.css'
 })
@@ -20,11 +21,10 @@ export class UsersListComponent implements OnInit {
     firstName: "",
     lastName: "",
     email: "",
-    phone: ""
+    phoneNumber: ""
   };
 
   userIndex = -1;
-  title = "";
 
   search: string = "";
   pageIndex: number = 1;
@@ -40,7 +40,6 @@ export class UsersListComponent implements OnInit {
     this.userService.getAll(this.search, this.pageIndex, this.pageSize).subscribe({
       next: (data) => {
         this.paginatedUsers = data;
-        console.log(this.paginatedUsers);
       },
       error: (e) => console.error(e)
     });
@@ -54,7 +53,7 @@ export class UsersListComponent implements OnInit {
       firstName: "",
       lastName: "",
       email: "",
-      phone: ""
+      phoneNumber: ""
     };
 
     this.userIndex = -1;
@@ -64,5 +63,4 @@ export class UsersListComponent implements OnInit {
     this.currentUser = user;
     this.userIndex = index;
   }
-
 }

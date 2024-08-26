@@ -12,9 +12,9 @@ namespace API.Endpoints
         {
             endpoint.MapGet("", GetUsers);
             endpoint.MapGet("getById/{id}", GetUserById);
-            endpoint.MapPost("create", AddUser);
-            endpoint.MapPut("update", UpdateUser);
-            endpoint.MapDelete("delete", DeleteUser);
+            endpoint.MapPost("", AddUser);
+            endpoint.MapPut("", UpdateUser);
+            endpoint.MapDelete("", DeleteUser);
 
             return endpoint;
 
