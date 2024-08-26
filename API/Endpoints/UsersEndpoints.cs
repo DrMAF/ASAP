@@ -11,15 +11,12 @@ namespace API.Endpoints
         public static IEndpointRouteBuilder MapAccount(this IEndpointRouteBuilder endpoint)
         {
             endpoint.MapGet("", GetUsers);
-            endpoint.MapGet("getById/{id}", GetUserById);
+            endpoint.MapGet("getById", GetUserById);
             endpoint.MapPost("", AddUser);
             endpoint.MapPut("", UpdateUser);
             endpoint.MapDelete("", DeleteUser);
 
             return endpoint;
-
-
-
         }
 
         private static async Task<IResult> GetUsers(IUserService userService, string search = "", int pageIndex = 1, int pageSize = 10)
@@ -32,7 +29,7 @@ namespace API.Endpoints
             return Results.Ok(users);
         }
 
-        private static async Task<IResult> GetUserById(int userId, IUserService userService)
+        private static async Task<IResult> GetUserById(IUserService userService, int userId)
         {
             User user = await userService.GetUserByIdAsync(userId);
 

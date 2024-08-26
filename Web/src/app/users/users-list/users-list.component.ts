@@ -30,6 +30,8 @@ export class UsersListComponent implements OnInit {
   pageIndex: number = 1;
   pageSize: number = 10;
 
+  viewMode = true;
+
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
@@ -62,5 +64,11 @@ export class UsersListComponent implements OnInit {
   setActiveUser(user: User, index: number): void {
     this.currentUser = user;
     this.userIndex = index;
+
+    this.viewMode = true;
+  }
+
+  switchMode(newViewMode: boolean): void{
+    this.viewMode = newViewMode;
   }
 }

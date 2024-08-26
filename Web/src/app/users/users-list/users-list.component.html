@@ -25,6 +25,6 @@
 
   </div>
   <div class="col-md-6">
-    <app-user-details [viewMode] ="true" [currentUser]="currentUser"></app-user-details>
+    <app-user-details [viewMode] ="viewMode" (changeViewMode)="switchMode($event)" [currentUser]="currentUser"></app-user-details>
   </div>
 </div>
