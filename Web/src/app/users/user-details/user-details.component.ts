@@ -4,11 +4,12 @@ import { UserService } from '../../../shared/services/user.service';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { KENDO_BUTTONS } from "@progress/kendo-angular-buttons";
 
 @Component({
   selector: 'app-user-details',
   standalone: true,
-  imports: [UserDetailsComponent, FormsModule, RouterModule, NgIf, NgFor],
+  imports: [UserDetailsComponent, FormsModule, RouterModule, NgIf, NgFor, KENDO_BUTTONS],
   templateUrl: './user-details.component.html',
   styleUrl: './user-details.component.css'
 })
@@ -61,7 +62,6 @@ export class UserDetailsComponent {
       this.router.navigate(['/users']);
     }
   }
-
 
   updateUser(): void {
     this.message = "";

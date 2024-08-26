@@ -4,6 +4,8 @@ import { UserService } from '../../../shared/services/user.service';
 import { FormsModule } from '@angular/forms';
 import { NgFor, NgIf } from '@angular/common';
 import { UserDetailsComponent } from '../user-details/user-details.component';
+import { Observable } from 'rxjs/internal/Observable';
+import { GridModule, GridDataResult, PageChangeEvent } from '@progress/kendo-angular-grid';
 
 @Component({
   selector: 'app-users-list',
@@ -30,7 +32,13 @@ export class UsersListComponent implements OnInit {
 
   search: string = "";
   pageIndex: number = 1;
-  pageSize: number = 10;
+
+  public gridItems: Observable<GridDataResult> | undefined;
+  public pageSize: number = 10;
+  public skip: number = 0;
+  //public sortDescriptor: SortDescriptor[] = [];
+  public filterTerm: number | null = null;
+
   constructor(private userService: UserService) { }
 
   ngOnInit(): void {
@@ -65,4 +73,23 @@ export class UsersListComponent implements OnInit {
     this.currentUser = user;
     this.userIndex = index;
   }
+
+  //public pageChange(event: PageChangeEvent): void {
+  //  this.skip = event.skip;
+  //  this.loadGridItems();
+  //}
+
+  //public handleSortChange(descriptor: SortDescriptor[]): void {
+  //  this.sortDescriptor = descriptor;
+  //  this.loadGridItems();
+  //}
+
+  //private loadGridItems(): void {
+  //  this.gridItems = this.userService.getAll(
+  //    this.skip,
+  //    this.pageSize,
+  //    //this.sortDescriptor,
+  //    this.filterTerm
+  //  );
+  //}
 }

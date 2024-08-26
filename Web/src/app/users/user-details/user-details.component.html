@@ -57,11 +57,11 @@
       </div>
     </form>
 
-    <button class="badge badge-danger mr-2" (click)="onDeleteUser()">Delete</button>
+    <button kendoButton themeColor="primary" [look]="'outline'" (click)="onDeleteUser()">Delete</button>
 
-    <button type="submit" class="badge badge-success mb-2" (click)="updateUser()">Update</button>
+    <button kendoButton themeColor="success" [look]="'outline'" (click)="updateUser()">Update</button>
 
-    <button type="submit" class="badge badge-success mb-2" (click)="onCancel()">Cancel</button>
+    <button kendoButton [look]="'outline'" (click)="onCancel()">Cancel</button>
 
     <p>{{ message }}</p>
   </div>
