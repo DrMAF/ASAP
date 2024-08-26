@@ -17,7 +17,7 @@ import { KENDO_LAYOUT } from '@progress/kendo-angular-layout';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'testProj';
+  title = 'ASAP';
   public menuIcon: SVGIcon = menuIcon;
   public bellIcon: SVGIcon = bellIcon;
   public kendokaAvatar =
