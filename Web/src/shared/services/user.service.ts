@@ -14,7 +14,7 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  getAll(search: string = "", pageIndex: number = 1, pageSize: number = 10): Observable<PaginatedResult<User>> {
+  getAll(search: string = ""): Observable<PaginatedResult<User>> {
     return this.http.get<PaginatedResult<User>>(baseUrl + "?search=" + search);
   }
 
@@ -22,11 +22,11 @@ export class UserService {
     return this.http.get<User>(`${baseUrl}/getById?userId=${id}`);
   }
 
-  create(data: any): Observable<any> {
+  create(data: User): Observable<any> {
     return this.http.post(baseUrl, data);
   }
 
-  update(id: any, data: any): Observable<any> {
+  update(id: any, data: User): Observable<any> {
     return this.http.put(`${baseUrl}`, data);
   }
 

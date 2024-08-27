@@ -14,6 +14,7 @@ import { KENDO_BUTTONS } from "@progress/kendo-angular-buttons";
   templateUrl: './create-user.component.html',
   styleUrl: './create-user.component.css'
 })
+
 export class CreateUserComponent {
 
   user: User = {
@@ -25,24 +26,53 @@ export class CreateUserComponent {
   };
 
   submitted = false;
-
+  error = "";
   constructor(private userService: UserService) { }
 
   saveUser(): void {
-    const data: User = {
-      id: 0,
-      firstName: this.user.firstName,
-      lastName: this.user.lastName,
-      email: this.user.email,
-      phoneNumber: this.user.phoneNumber
-    };
+    //const data: User = {
+    //  id: 0,
+    //  firstName: this.user.firstName,
+    //  lastName: this.user.lastName,
+    //  email: this.user.email,
+    //  phoneNumber: this.user.phoneNumber
+    //};
 
-    this.userService.create(data).subscribe({
+    if (!this.user.firstName
+      || !this.user.lastName
+      || !this.user.email
+      || !this.user.phoneNumber) {
+      this.error = "All fields are requied."
+
+      return;
+    }
+
+    const emailRegex = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+
+    if (!emailRegex.test(this.user.email)) {
+      this.error = "Email is not valid.";
+
+      return;
+    }
+
+    const phoneRegex = new RegExp(/^0\d{7,12}$/);
+
+    if (!phoneRegex.test(this.user.phoneNumber)) {
+      this.error = "Phone number is not valid.";
+
+      return;
+    }
+
+    this.userService.create(this.user).subscribe({
       next: (res) => {
-        console.log(res);
         this.submitted = true;
+
+        this.error = "";
       },
-      error: (e) => console.error(e)
+      error: (e) => {
+        console.log(e);
+        console.error(e);
+      }
     });
   }
 

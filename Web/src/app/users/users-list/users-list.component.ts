@@ -60,7 +60,7 @@ export class UsersListComponent implements OnInit {
   }
 
   retrieveUsers(): void {
-    this.userService.getAll(this.search, 1, 10).subscribe({
+    this.userService.getAll(this.search).subscribe({
       next: (data: PaginatedResult<User>) => {
         //this.paginatedUsers = data;
         this.gridView = data?.items;

@@ -1,6 +1,6 @@
 <div class="profile-demo card-container">
-  <div *ngIf="!submitted" class="k-card custom-card submit-form">
-    <div class="card-row">
+  <div class="k-card custom-card submit-form">
+    <div *ngIf="!submitted" class="card-row">
       <div class="card-column">
         <div class="avatar-title-container">
           <div class="k-skeleton skeleton-avatar"></div>
@@ -8,39 +8,32 @@
         </div>
         <div class="component-container">
           <kendo-label text="First name">
-            <kendo-textbox #firstName="ngModel" id="firstName" required [(ngModel)]="user.firstName" name="firstName">
+            <kendo-textbox id="firstName" required [(ngModel)]="user.firstName" name="firstName">
             </kendo-textbox>
           </kendo-label>
-          <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)" style="color:red">
-            <b>First name required</b>
-          </div>
 
           <div class="component-container">
             <kendo-label text="Last name">
-              <kendo-textbox #lastName="ngModel" id="lastName" required [(ngModel)]="user.lastName" name="lastName">
+              <kendo-textbox id="lastName" required [(ngModel)]="user.lastName" name="lastName">
               </kendo-textbox>
             </kendo-label>
-            <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)" style="color:red">
-              <b>Last name required</b>
-            </div>
           </div>
 
           <div class="component-container">
             <kendo-label text="Email">
-              <kendo-textbox #email="ngModel" id="email" required [(ngModel)]="user.email" name="email"></kendo-textbox>
+              <kendo-textbox id="email" required [(ngModel)]="user.email" name="email"></kendo-textbox>
             </kendo-label>
-            <div *ngIf="email.invalid && (email.dirty || email.touched)" style="color:red">
-              <b>Email required</b>
-            </div>
           </div>
 
           <div class="component-container">
             <kendo-label text="Phone number">
-              <kendo-textbox #phoneNumber="ngModel" id="phoneNumber" required [(ngModel)]="user.phoneNumber" name="phoneNumber"></kendo-textbox>
+              <kendo-textbox id="phoneNumber" required [(ngModel)]="user.phoneNumber" name="phoneNumber"></kendo-textbox>
             </kendo-label>
-            <div *ngIf="phoneNumber.invalid && (phoneNumber.dirty || phoneNumber.touched)" style="color:red">
-              <b>Phone number required</b>
-            </div>
+          </div>
+
+          <div *ngIf="error" class="component-container">
+            <kendo-formerror>{{error}}</kendo-formerror>
+
           </div>
 
           <div class="component-container">
@@ -61,3 +54,4 @@
       </div>
     </div>
   </div>
+</div>
