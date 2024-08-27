@@ -43,9 +43,12 @@ namespace API.HostedServices
 
                         var newsUpdate = await polygonNewsService.SyncPolygonNews();
 
-                        var notificationService = scope.ServiceProvider.GetRequiredService<INotificationService>();
+                        if (newsUpdate != null && newsUpdate.Any())
+                        {
+                            var notificationService = scope.ServiceProvider.GetRequiredService<INotificationService>();
 
-                        await notificationService.SendEmailsToUsersAsync(newsUpdate);
+                            await notificationService.SendEmailsToUsersAsync(newsUpdate);
+                        }
                     }
                 }
                 catch (Exception ex)

@@ -29,13 +29,16 @@ namespace BLL
         {
             try
             {
-                var users = _userMangaer.Users.Select(usr => new { usr.FirstName, usr.Email }).ToList();
-
-                string emailHtml = FormatEmail(newsList);
-
-                foreach (var user in users)
+                if (newsList != null && newsList.Any())
                 {
-                    await _emailService.SendEmailAsync("News summary", emailHtml, user.Email);
+                    var users = _userMangaer.Users.Select(usr => new { usr.FirstName, usr.Email }).ToList();
+
+                    string emailHtml = FormatEmail(newsList);
+
+                    foreach (var user in users)
+                    {
+                        await _emailService.SendEmailAsync("News summary", emailHtml, user.Email);
+                    }
                 }
             }
             catch (Exception ex)
@@ -78,7 +81,7 @@ namespace BLL
             catch (Exception ex)
             {
                 _logger.LogCritical($"Error in FormatEmail: {ex}");
-                
+
                 return "";
             }
         }

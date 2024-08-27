@@ -13,9 +13,12 @@ namespace API.Endpoints
 
         private static async Task<IResult> SendEmails(INotificationService notificationService, IPolygonNewsService polygonNewsService)
         {
-            var news = polygonNewsService.GetAll().ToList();
+            var newsList = polygonNewsService.GetAll().ToList();
 
-            await notificationService.SendEmailsToUsersAsync(news);
+            if (newsList != null && newsList.Any())
+            {
+                await notificationService.SendEmailsToUsersAsync(newsList);
+            }
 
             return Results.Ok();
         }
