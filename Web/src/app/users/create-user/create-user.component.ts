@@ -4,7 +4,7 @@ import { UserService } from '../../../shared/services/user.service';
 import { FormsModule } from '@angular/forms';
 import { NgFor, NgIf } from '@angular/common';
 import { KENDO_INPUTS } from '@progress/kendo-angular-inputs';
-import { LabelModule } from '@progress/kendo-angular-label'
+import { LabelModule } from '@progress/kendo-angular-label';
 import { KENDO_BUTTONS } from "@progress/kendo-angular-buttons";
 
 @Component({
