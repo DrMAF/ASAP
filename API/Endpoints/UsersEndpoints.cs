@@ -19,12 +19,12 @@ namespace API.Endpoints
             return endpoint;
         }
 
-        private static async Task<IResult> GetUsers(IUserService userService, string search = "", int pageIndex = 1, int pageSize = 10)
+        private static async Task<IResult> GetUsers(IUserService userService, string search = "")
         {
-            pageIndex = pageIndex < 1 ? 1 : pageIndex;
-            pageSize = pageSize < 1 ? 1 : pageSize;
+            //pageIndex = pageIndex < 1 ? 1 : pageIndex;
+            //pageSize = pageSize < 1 ? 1 : pageSize;
 
-            var users = await userService.GetPaginatedUsersAsync(search, pageIndex, pageSize);
+            var users = await userService.GetPaginatedUsersAsync(search);
 
             return Results.Ok(users);
         }

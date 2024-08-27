@@ -2,6 +2,7 @@
 using Core.Interfaces.Services;
 using Core.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 
 namespace BLL
 {
@@ -9,78 +10,113 @@ namespace BLL
     public class UserService : IUserService
     {
         readonly UserManager<User> _userManager;
+        readonly ILogger<UserService> _logger;
 
-        public UserService(UserManager<User> userManager)
+        public UserService(UserManager<User> userManager,
+        ILogger<UserService> logger)
         {
             _userManager = userManager;
+            _logger = logger;
         }
 
-        public async Task<PaginatedResult<User>> GetPaginatedUsersAsync(string search, int pageIndex = 1, int pageSize = 10)
+        public async Task<PaginatedResult<User>> GetPaginatedUsersAsync(string search)
         {
-            var users = _userManager.Users;
-
-            if (!string.IsNullOrEmpty(search))
+            try
             {
-                users = _userManager.Users.Where(usr => usr.FirstName.Contains(search)
-                || usr.LastName.Contains(search)
-                || (!string.IsNullOrEmpty(usr.Email) && usr.Email.Contains(search))
-                || (!string.IsNullOrEmpty(usr.PhoneNumber) && usr.PhoneNumber.Contains(search)));
+                var users = _userManager.Users;
+
+                if (!string.IsNullOrEmpty(search))
+                {
+                    users = _userManager.Users.Where(usr => usr.FirstName.Contains(search)
+                    || usr.LastName.Contains(search)
+                    || (!string.IsNullOrEmpty(usr.Email) && usr.Email.Contains(search))
+                    || (!string.IsNullOrEmpty(usr.PhoneNumber) && usr.PhoneNumber.Contains(search)));
+                }
+
+                //int count = users.Count();
+                //int totalPages = (int)Math.Ceiling(count / (double)pageSize);
+
+                users = users.OrderBy(usr => usr.Id);//.Skip(pageIndex - 1).Take(pageSize);
+
+                var result = users.ToList();
+
+                return new PaginatedResult<User>(result, 1, 10);
             }
-
-            int count = users.Count();
-            int totalPages = (int)Math.Ceiling(count / (double)pageSize);
-
-            users = users.OrderBy(usr => usr.Id).Skip(pageIndex - 1).Take(pageSize);
-
-            var result = users.ToList();
-
-            return new PaginatedResult<User>(result, pageIndex, totalPages);
+            catch (Exception ex)
+            {
+                _logger.LogCritical($"Error in GetPaginatedUsersAsync: {ex} => {ex.Message}");
+                
+                return null;
+            }
         }
 
         public async Task<User> GetUserByIdAsync(int userId)
         {
-            if(userId <=0)
+            try
             {
+                if (userId <= 0)
+                {
+                    return null;
+                }
+
+                User user = await _userManager.FindByIdAsync(userId.ToString());
+
+                return user;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical($"Error in GetUserByIdAsync: {ex} => {ex.Message}");
+                
                 return null;
             }
-
-            User user = await _userManager.FindByIdAsync(userId.ToString());
-
-            return user;
         }
         public async Task<IdentityResult> CreateUserAsync(UserModel model)
         {
-            User user = new User
+            try
             {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                PhoneNumber = model.PhoneNumber,
-                Email = model.Email,
-                UserName = model.Email
-            };
+                User user = new User
+                {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    PhoneNumber = model.PhoneNumber,
+                    Email = model.Email,
+                    UserName = model.Email
+                };
 
-            var res = await _userManager.CreateAsync(user);
+                var res = await _userManager.CreateAsync(user);
 
-            return res;
+                return res;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical($"Error in CreateUserAsync: {ex} => {ex.Message}");
+               
+                return null;
+            }
         }
-
-        
 
         public async Task<IdentityResult> UpdateUserAsync(UserModel model)
         {
-            var user = await _userManager.FindByIdAsync(model.Id.ToString());
-
-            if (user != null)
+            try
             {
-                user.FirstName = model.FirstName;
-                user.LastName = model.LastName;
-                user.PhoneNumber = model.PhoneNumber;
-                user.Email = model.Email;
-                user.UserName = model.Email;
+                var user = await _userManager.FindByIdAsync(model.Id.ToString());
 
-                var result = await _userManager.UpdateAsync(user);
+                if (user != null)
+                {
+                    user.FirstName = model.FirstName;
+                    user.LastName = model.LastName;
+                    user.PhoneNumber = model.PhoneNumber;
+                    user.Email = model.Email;
+                    user.UserName = model.Email;
 
-                return result;
+                    var result = await _userManager.UpdateAsync(user);
+
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical($"Error in UpdateUserAsync: {ex} => {ex.Message}");
             }
 
             return null;
@@ -88,13 +124,20 @@ namespace BLL
 
         public async Task<IdentityResult> DeleteUserAsync(int userId)
         {
-            var user = await _userManager.FindByIdAsync(userId.ToString());
+            try
+            {
+                var user = await _userManager.FindByIdAsync(userId.ToString());
 
-            if (user != null)
-            {                
-                var result = await _userManager.DeleteAsync(user);
+                if (user != null)
+                {
+                    var result = await _userManager.DeleteAsync(user);
 
-                return result;
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogCritical($"Error in DeleteUserAsync: {ex} => {ex.Message}");
             }
 
             return null;

@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Messaging;
 using StockMarket.Bootstrapper;
 using API.HostedServices;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +36,8 @@ builder.Services.AddCors(options =>
         });
 });
 
+builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -47,6 +50,8 @@ app.UseSwaggerUI();
 //    var context = serviceScope.ServiceProvider.GetRequiredService<AppDbContext>();
 //    context.Database.EnsureCreated();
 //}
+
+app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
 app.UseCors();
