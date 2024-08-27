@@ -15,20 +15,20 @@
     <div class="col-md-8">
       <div class="example-config" style="width:600px;">
         <div class="inputs-row">
-          <div class="input-wrapper">
+          <!--<div class="input-wrapper">
             <kendo-label [for]="pagerType" text="Type of the pager:"></kendo-label>
             <kendo-dropdownlist #pagerType [data]="pagerTypes" [(value)]="type"></kendo-dropdownlist>
-          </div>
-          <div class="input-wrapper">
+          </div>-->
+          <!--<div class="input-wrapper">
             <kendo-label [for]="count" text="Maximum number of buttons:"></kendo-label>
             <kendo-numerictextbox #count format="n0" [(value)]="buttonCount"></kendo-numerictextbox>
-          </div>
+          </div>-->
         </div>
         <div class="inputs-row">
-          <div class="input-wrapper">
+          <!--<div class="input-wrapper">
             <input #showinfo type="checkbox" kendoCheckBox [(ngModel)]="info" />
             <kendo-label [for]="showinfo" text="Show info"></kendo-label>
-          </div>
+          </div>-->
           <div class="input-wrapper">
             <input #size type="checkbox" kendoCheckBox [(ngModel)]="pageSizes" />
             <kendo-label [for]="size" text="Show page sizes"></kendo-label>
@@ -74,7 +74,7 @@
     </div>
     <div class="col-md-4">
       <div style="margin-top:150px;">
-        <app-user-details [viewMode]="true" [itemsCount]="itemsCount" [currentUser]="currentUser"></app-user-details>
+        <app-user-details [itemsCount]="itemsCount" [currentUser]="currentUser"></app-user-details>
 
       </div>
     </div>

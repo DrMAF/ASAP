@@ -47,7 +47,7 @@ export class UsersListComponent implements OnInit {
   pageIndex: number = 1;
   buttonCount = 3;
   info = true;
-  pageSizes = [2, 5, 10];
+  pageSizes = [2, 5, 10, 20];
   previousNext = true;
   position: PagerPosition = "both";
   pagerTypes = ["numeric", "input"];
@@ -92,9 +92,4 @@ export class UsersListComponent implements OnInit {
   showDetails(event: any, dataItem: User) {
     this.currentUser = dataItem;
   }
-
-  //loadItems(): void {
-  //  console.log();
-  //  this.gridView = this.paginatedUsers.items.slice(this.skip, this.skip + this.pageSize);
-  //}
 }

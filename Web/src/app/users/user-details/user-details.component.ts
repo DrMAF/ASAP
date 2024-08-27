@@ -16,10 +16,9 @@ import { KENDO_INPUTS } from '@progress/kendo-angular-inputs';
   templateUrl: './user-details.component.html',
   styleUrl: './user-details.component.css'
 })
-export class UserDetailsComponent {
-  @Input() viewMode = false;
-  @Input() itemsCount = 0;
 
+export class UserDetailsComponent {
+  @Input() itemsCount = 0;
 
   @Input() currentUser: User = {
     id: 0,
@@ -29,73 +28,14 @@ export class UserDetailsComponent {
     phoneNumber: ""
   };
 
-  message = "";
   constructor(private userService: UserService,
     private route: ActivatedRoute,
     private router: Router) { }
 
   ngOnInit(): void {
-    if (!this.viewMode) {
-      this.message = "";
-      this.getUser(this.route.snapshot.params["id"]);
-    }
-  }
-
-  getUser(id: string): void {
-    this.userService.getById(id).subscribe({
-      next: (data) => {
-        this.currentUser = data;
-      },
-      error: (e) => console.error(e)
-    });
-  }
-
-  onDeleteUser() {
-    let res = confirm("Are you sure you to delete this user?");
-
-    if (res) {
-      this.deleteUser();
-    }
-  }
-
-  onCancel() {
-    let res = confirm("Any modification will be lost. Are you sure?");
-
-    if (res) {
-      this.router.navigate(["/users"]);
-    }
-  }
-
-  updateUser(): void {
-    this.message = "";
-
-    this.userService.update(this.currentUser.id, this.currentUser).subscribe({
-      next: (res) => {
-        this.message = "The user was updated successfully.";
-
-        alert("User updated successfully.");
-        this.router.navigate(["/users"]);
-      },
-      error: (e) => {
-        console.error(e);
-        this.message = e.message;
-      }
-    });
-  }
-
-  deleteUser(): void {
-    this.userService.delete(this.currentUser.id).subscribe({
-      next: (res) => {
-        alert("User deleted.");
-
-        this.router.navigate(["/users"]);
-      },
-      error: (e) => console.error(e)
-    });
   }
 
   goUpdate() {
-    this.router.navigate(["/users/" + this.currentUser.id]);
+    this.router.navigate(["/update/" + this.currentUser.id]);
   }
-
 }

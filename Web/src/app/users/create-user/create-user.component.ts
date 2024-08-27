@@ -6,6 +6,7 @@ import { NgFor, NgIf } from '@angular/common';
 import { KENDO_INPUTS } from '@progress/kendo-angular-inputs';
 import { LabelModule } from '@progress/kendo-angular-label';
 import { KENDO_BUTTONS } from "@progress/kendo-angular-buttons";
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-create-user',
@@ -25,52 +26,61 @@ export class CreateUserComponent {
     phoneNumber: ""
   };
 
+  editMode = false;
   submitted = false;
   error = "";
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService,
+    private route: ActivatedRoute,
+    private router: Router) { }
 
-  saveUser(): void {
-    //const data: User = {
-    //  id: 0,
-    //  firstName: this.user.firstName,
-    //  lastName: this.user.lastName,
-    //  email: this.user.email,
-    //  phoneNumber: this.user.phoneNumber
-    //};
+  ngOnInit(): void {
+    let id = this.route.snapshot.params["id"];
 
-    if (!this.user.firstName
-      || !this.user.lastName
-      || !this.user.email
-      || !this.user.phoneNumber) {
-      this.error = "All fields are requied."
+    if (id) {
+      this.editMode = true;
+      this.getUser(this.route.snapshot.params["id"]);
+    }
+  }
 
+  saveUser() {
+    let validRes = this.validateForrm();
+
+    if (!validRes) {
       return;
     }
 
-    const emailRegex = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
-
-    if (!emailRegex.test(this.user.email)) {
-      this.error = "Email is not valid.";
-
-      return;
+    if (this.editMode) {
+      this.updateUser();
     }
-
-    const phoneRegex = new RegExp(/^0\d{7,12}$/);
-
-    if (!phoneRegex.test(this.user.phoneNumber)) {
-      this.error = "Phone number is not valid.";
-
-      return;
+    else {
+      this.createUser();
     }
+  }
 
+  createUser() {
     this.userService.create(this.user).subscribe({
       next: (res) => {
         this.submitted = true;
-
         this.error = "";
       },
       error: (e) => {
         console.log(e);
+        console.error(e);
+      }
+    });
+  }
+
+  updateUser() {
+    this.userService.update(this.user.id, this.user).subscribe({
+      next: (res) => {
+        //this.message = "The user was updated successfully.";
+        this.submitted = true;
+        this.error = "";
+        //alert("User updated successfully.");
+        //this.router.navigate(["/users"]);
+      },
+      error: (e) => {
+        console.error(e);
         console.error(e);
       }
     });
@@ -88,4 +98,72 @@ export class CreateUserComponent {
     };
   }
 
+  getUser(id: string): void {
+    this.userService.getById(id).subscribe({
+      next: (data) => {
+        this.user = data;
+      },
+      error: (e) => console.error(e)
+    });
+  }
+
+  validateForrm(): boolean {
+    if (!this.user.firstName
+      || !this.user.lastName
+      || !this.user.email
+      || !this.user.phoneNumber) {
+      this.error = "All fields are requied."
+
+      return false;
+    }
+
+    const emailRegex = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+
+    if (!emailRegex.test(this.user.email)) {
+      this.error = "Email is not valid.";
+
+      return false;
+    }
+
+    const phoneRegex = new RegExp(/^0\d{7,12}$/);
+
+    if (!phoneRegex.test(this.user.phoneNumber)) {
+      this.error = "Phone number is not valid.";
+
+      return false;
+    }
+
+    return true;
+  }
+
+  onDeleteUser() {
+    let res = confirm("Are you sure you to delete this user?");
+
+    if (res) {
+      this.deleteUser();
+    }
+  }
+
+  deleteUser(): void {
+    this.userService.delete(this.user.id).subscribe({
+      next: (res) => {
+        alert("User deleted.");
+
+        this.router.navigate(["/users"]);
+      },
+      error: (e) => console.error(e)
+    });
+  }
+
+  onCancel() {
+    let res = confirm("Any modification will be lost. Are you sure?");
+
+    if (res) {
+      this.router.navigate(["/users"]);
+    }
+  }
+
+  goToList() {
+    this.router.navigate(["/users"]);
+  }
 }

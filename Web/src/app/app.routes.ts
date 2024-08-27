@@ -7,5 +7,6 @@ export const routes: Routes = [
   { path: "", redirectTo: "users", pathMatch: "full" },
   { path: "users", component: UsersListComponent },
   { path: 'users/:id', component: UserDetailsComponent },
-  { path: "create", component: CreateUserComponent }
+  { path: "create", component: CreateUserComponent },
+  { path: "update/:id", component: CreateUserComponent }
 ];

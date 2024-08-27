@@ -1,4 +1,4 @@
-<div *ngIf="viewMode; else editable">
+<div>
   @if(currentUser.id){
   <h4>User details</h4>
   <div>
@@ -37,7 +37,7 @@
   }
 </div>
 
-<ng-template #editable>
+<!--<ng-template #editable>
   <div *ngIf="currentUser.id" class="edit-form">
     <h4>Edit user details</h4>
     <div class="card-row">
@@ -90,4 +90,4 @@
     <br />
     <p>User cannot be found.</p>
   </div>
-</ng-template>
+</ng-template>-->
