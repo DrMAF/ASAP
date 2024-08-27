@@ -40,7 +40,7 @@ namespace Messaging.Services
             }
             catch (Exception ex)
             {
-                _logger.LogCritical($"Error in SendEmailAsync {ex} => {ex.Message}");
+                _logger.LogCritical($"Error in SendEmailAsync {ex}");
             }
         }
     }

@@ -40,38 +40,47 @@ namespace BLL
             }
             catch (Exception ex)
             {
-                _logger.LogCritical($"Error: {ex} => {ex.Message}");
+                _logger.LogCritical($"Error in SendEmailsToUsersAsync: {ex}");
             }
         }
 
-        private static string FormatEmail(List<PolygonNews> newsList)
+        private string FormatEmail(List<PolygonNews> newsList)
         {
-            string itemFilePath = Path.Combine(Directory.GetCurrentDirectory(), "./HTMLTemplates/Polygon/News", "NewsItem.html");
-
-            string newsItemTemplate = File.ReadAllText(itemFilePath);
-
-            StringBuilder itemStringResult = new StringBuilder();
-
-            foreach (var newsItem in newsList)
+            try
             {
-                itemStringResult = itemStringResult.Append(newsItemTemplate);
+                string itemFilePath = Path.Combine(Directory.GetCurrentDirectory(), "./HTMLTemplates/Polygon/News", "NewsItem.html");
 
-                itemStringResult = itemStringResult.Replace("@NewsTitle", newsItem.Title);
-                itemStringResult = itemStringResult.Replace("@NewsDescription", newsItem.Description);
-                itemStringResult = itemStringResult.Replace("@NewsImageLink", newsItem.Image_url);
-                itemStringResult = itemStringResult.Replace("@NewsLink", newsItem.Article_url);
-                itemStringResult = itemStringResult.Replace("@NewsAuther", newsItem.Author);
-                itemStringResult = itemStringResult.Replace("@NewsPublisher", newsItem.PublisherName);
-                itemStringResult = itemStringResult.Replace("@NewsPublishedAt", newsItem.Published_utc.ToString("yyyy-MM-dd HH:mm"));
+                string newsItemTemplate = File.ReadAllText(itemFilePath);
+
+                StringBuilder itemStringResult = new StringBuilder();
+
+                foreach (var newsItem in newsList)
+                {
+                    itemStringResult = itemStringResult.Append(newsItemTemplate);
+
+                    itemStringResult = itemStringResult.Replace("@NewsTitle", newsItem.Title);
+                    itemStringResult = itemStringResult.Replace("@NewsDescription", newsItem.Description);
+                    itemStringResult = itemStringResult.Replace("@NewsImageLink", newsItem.Image_url);
+                    itemStringResult = itemStringResult.Replace("@NewsLink", newsItem.Article_url);
+                    itemStringResult = itemStringResult.Replace("@NewsAuther", newsItem.Author);
+                    itemStringResult = itemStringResult.Replace("@NewsPublisher", newsItem.PublisherName);
+                    itemStringResult = itemStringResult.Replace("@NewsPublishedAt", newsItem.Published_utc.ToString("yyyy-MM-dd HH:mm"));
+                }
+
+                string newsEmailFilePath = Path.Combine(Directory.GetCurrentDirectory(), "./HTMLTemplates/Polygon/News", "NewsEmail.html");
+
+                string newsEmailTemplat = File.ReadAllText(newsEmailFilePath);
+
+                newsEmailTemplat = newsEmailTemplat.Replace("@NewsItemsTemplates", itemStringResult.ToString());
+
+                return newsEmailTemplat;
             }
-
-            string newsEmailFilePath = Path.Combine(Directory.GetCurrentDirectory(), "./HTMLTemplates/Polygon/News", "NewsEmail.html");
-
-            string newsEmailTemplat = File.ReadAllText(newsEmailFilePath);
-
-            newsEmailTemplat = newsEmailTemplat.Replace("@NewsItemsTemplates", itemStringResult.ToString());
-
-            return newsEmailTemplat;
+            catch (Exception ex)
+            {
+                _logger.LogCritical($"Error in FormatEmail: {ex}");
+                
+                return "";
+            }
         }
     }
 }

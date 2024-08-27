@@ -63,7 +63,7 @@ namespace BLL
             }
             catch (Exception ex)
             {
-                _logger.LogCritical($"Error in SyncPolygonNews: {ex} => {ex.Message}");
+                _logger.LogCritical($"Error in SyncPolygonNews: {ex}");
                 return new List<PolygonNews>();
             }
         }

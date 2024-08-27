@@ -6,20 +6,18 @@ using Microsoft.Extensions.Logging;
 
 namespace BLL
 {
-
     public class UserService : IUserService
     {
         readonly UserManager<User> _userManager;
         readonly ILogger<UserService> _logger;
 
-        public UserService(UserManager<User> userManager,
-        ILogger<UserService> logger)
+        public UserService(UserManager<User> userManager, ILogger<UserService> logger)
         {
             _userManager = userManager;
             _logger = logger;
         }
 
-        public async Task<PaginatedResult<User>> GetPaginatedUsersAsync(string search)
+        public PaginatedResult<User> GetPaginatedUsersAsync(string search)
         {
             try
             {
@@ -44,8 +42,8 @@ namespace BLL
             }
             catch (Exception ex)
             {
-                _logger.LogCritical($"Error in GetPaginatedUsersAsync: {ex} => {ex.Message}");
-                
+                _logger.LogCritical($"Error in GetPaginatedUsersAsync: {ex}");
+
                 return null;
             }
         }
@@ -65,11 +63,12 @@ namespace BLL
             }
             catch (Exception ex)
             {
-                _logger.LogCritical($"Error in GetUserByIdAsync: {ex} => {ex.Message}");
-                
+                _logger.LogCritical($"Error in GetUserByIdAsync: {ex}");
+
                 return null;
             }
         }
+
         public async Task<IdentityResult> CreateUserAsync(UserModel model)
         {
             try
@@ -89,8 +88,8 @@ namespace BLL
             }
             catch (Exception ex)
             {
-                _logger.LogCritical($"Error in CreateUserAsync: {ex} => {ex.Message}");
-               
+                _logger.LogCritical($"Error in CreateUserAsync: {ex}");
+
                 return null;
             }
         }
@@ -116,7 +115,7 @@ namespace BLL
             }
             catch (Exception ex)
             {
-                _logger.LogCritical($"Error in UpdateUserAsync: {ex} => {ex.Message}");
+                _logger.LogCritical($"Error in UpdateUserAsync: {ex}");
             }
 
             return null;
@@ -137,7 +136,7 @@ namespace BLL
             }
             catch (Exception ex)
             {
-                _logger.LogCritical($"Error in DeleteUserAsync: {ex} => {ex.Message}");
+                _logger.LogCritical($"Error in DeleteUserAsync: {ex}");
             }
 
             return null;

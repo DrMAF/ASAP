@@ -6,7 +6,7 @@ namespace Core.Interfaces.Services
 {
     public interface IUserService
     {
-        Task<PaginatedResult<User>> GetPaginatedUsersAsync(string search);
+        PaginatedResult<User> GetPaginatedUsersAsync(string search);
         Task<User> GetUserByIdAsync(int userId);
         Task<IdentityResult> CreateUserAsync(UserModel model);
         Task<IdentityResult> UpdateUserAsync(UserModel model);
