@@ -1,6 +1,6 @@
 <div *ngIf="viewMode; else editable">
   @if(currentUser.id){
-  <h4>User</h4>
+  <h4>User details</h4>
   <div>
     <label>
       <strong>First name:</strong>
@@ -25,12 +25,14 @@
     </label>
     {{ currentUser.phoneNumber }}
   </div>
-  <a routerLink="/users/{{ currentUser.id }}">Edit</a>
+  
+  <button kendoButton themeColor="success" [look]="'outline'" (click)="goUpdate()">Edit</button>
+
   }
   @else if(itemsCount > 0){
   <div>
-    <br />
-    <p>Please click on a user to show details...</p>
+    <kendo-label text="Please click on a user to show details.">
+    </kendo-label>
   </div>
   }
 </div>
@@ -45,8 +47,7 @@
         </div>
         <div class="component-container">
           <kendo-label text="First name">
-            <kendo-textbox id="firstName" required
-                           [(ngModel)]="currentUser.firstName" name="firstName">
+            <kendo-textbox id="firstName" required [(ngModel)]="currentUser.firstName" name="firstName">
             </kendo-textbox>
           </kendo-label>
         </div>

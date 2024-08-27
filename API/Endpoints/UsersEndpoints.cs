@@ -12,7 +12,7 @@ namespace API.Endpoints
         {
             endpoint.MapGet("", GetUsers);
             endpoint.MapGet("getById", GetUserById);
-            endpoint.MapPost("", AddUser);
+            endpoint.MapPost("", CreateUser);
             endpoint.MapPut("", UpdateUser);
             endpoint.MapDelete("", DeleteUser);
 
@@ -36,7 +36,7 @@ namespace API.Endpoints
             return Results.Ok(user);
         }
 
-        private static async Task<IResult> AddUser(IUserService userService, [FromBody] UserModel model)
+        private static async Task<IResult> CreateUser(IUserService userService, [FromBody] UserModel model)
         {
             IdentityResult res = await userService.CreateUserAsync(model);
 

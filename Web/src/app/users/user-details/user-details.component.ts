@@ -62,7 +62,7 @@ export class UserDetailsComponent {
     let res = confirm("Any modification will be lost. Are you sure?");
 
     if (res) {
-      this.router.navigate(['/users']);
+      this.router.navigate(["/users"]);
     }
   }
 
@@ -74,11 +74,7 @@ export class UserDetailsComponent {
         this.message = "The user was updated successfully.";
 
         alert("User updated successfully.");
-        this.router.navigate(['/users']);
-
-        //setInterval(() => {
-
-        //}, 1000);
+        this.router.navigate(["/users"]);
       },
       error: (e) => {
         console.error(e);
@@ -92,10 +88,14 @@ export class UserDetailsComponent {
       next: (res) => {
         alert("User deleted.");
 
-        this.router.navigate(['/users']);
+        this.router.navigate(["/users"]);
       },
       error: (e) => console.error(e)
     });
+  }
+
+  goUpdate() {
+    this.router.navigate(["/users/" + this.currentUser.id]);
   }
 
 }
