@@ -3,3 +3,29 @@
   max-width: 1000px;
   margin: auto;
 }
+.inputs-row {
+  display: flex;
+  height: 2em;
+  align-items: center;
+}
+
+  .inputs-row:not(:last-of-type) {
+    margin-bottom: 1em;
+  }
+
+.input-wrapper,
+h4 {
+  margin-right: 1em;
+}
+
+  .input-wrapper .k-radio,
+  .input-wrapper .k-checkbox,
+  .input-wrapper kendo-label {
+    display: inline-block;
+    margin-right: 8px;
+  }
+
+kendo-numerictextbox,
+kendo-dropdownlist {
+  width: 170px;
+}
