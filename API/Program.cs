@@ -38,18 +38,15 @@ builder.Services.AddCors(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
 
-using (var serviceScope = app.Services.GetService<IServiceScopeFactory>().CreateScope())
-{
-    var context = serviceScope.ServiceProvider.GetRequiredService<AppDbContext>();
-    context.Database.EnsureCreated();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
+//using (var serviceScope = app.Services.GetService<IServiceScopeFactory>().CreateScope())
+//{
+//    var context = serviceScope.ServiceProvider.GetRequiredService<AppDbContext>();
+//    context.Database.EnsureCreated();
+//}
 
 app.UseHttpsRedirection();
 app.UseCors();
