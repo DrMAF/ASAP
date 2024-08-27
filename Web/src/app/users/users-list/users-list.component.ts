@@ -6,11 +6,15 @@ import { NgFor, NgIf } from '@angular/common';
 import { UserDetailsComponent } from '../user-details/user-details.component';
 import { Observable } from 'rxjs/internal/Observable';
 import { GridModule, GridDataResult, PageChangeEvent } from '@progress/kendo-angular-grid';
+import { KENDO_GRID, RowArgs, SelectableSettings, ColumnComponent } from '@progress/kendo-angular-grid';
+import { KENDO_POPUP } from '@progress/kendo-angular-popup';
+import { KENDO_BUTTONS } from "@progress/kendo-angular-buttons";
 
 @Component({
   selector: 'app-users-list',
   standalone: true,
-  imports: [UserDetailsComponent, FormsModule, NgIf, NgFor],
+  imports: [UserDetailsComponent, FormsModule, NgIf, NgFor,
+    KENDO_GRID, KENDO_POPUP, ColumnComponent, KENDO_BUTTONS],
   templateUrl: './users-list.component.html',
   styleUrl: './users-list.component.css'
 })
@@ -33,11 +37,36 @@ export class UsersListComponent implements OnInit {
   search: string = "";
   pageIndex: number = 1;
 
-  public gridItems: Observable<GridDataResult> | undefined;
-  public pageSize: number = 10;
-  public skip: number = 0;
+  gridItems: Observable<GridDataResult> | undefined;
+  pageSize: number = 10;
+  skip: number = 0;
   //public sortDescriptor: SortDescriptor[] = [];
-  public filterTerm: number | null = null;
+  filterTerm: number | null = null;
+
+  anchorElement: any;
+  show = false;
+  anchorAlign = {
+    horizontal: 'left',
+    vertical: 'top'
+  }
+
+  selectableSettings: SelectableSettings = {
+    cell: true,
+  };
+
+  gridData: any[] = [];
+  isCellSelected = (
+    row: RowArgs,
+    column: ColumnComponent,
+    colIndex: number
+  ): { selected: boolean; item: { itemKey: number; columnKey: number } } => ({
+    selected:
+      (row.index % 2 && !(colIndex % 2)) || column.field === "ReorderLevel",
+    item: {
+      itemKey: row.index,
+      columnKey: colIndex,
+    },
+  });
 
   constructor(private userService: UserService) { }
 
@@ -49,6 +78,9 @@ export class UsersListComponent implements OnInit {
     this.userService.getAll(this.search, this.pageIndex, this.pageSize).subscribe({
       next: (data: PaginatedResult<User>) => {
         this.paginatedUsers = data;
+
+        this.gridData = this.paginatedUsers.items;
+
         this.itemsCount = data?.items?.length;
       },
       error: (e) => console.error(e)
@@ -74,6 +106,19 @@ export class UsersListComponent implements OnInit {
     this.userIndex = index;
   }
 
+  showDetails(event: any, dataItem: User) {
+    this.currentUser = dataItem;
+    this.anchorElement = event.target.closest('tr');
+    this.show = true;
+
+    console.log("show", this.show);
+  }
+
+  public closePopup() {
+    this.show = false;
+    this.anchorElement = undefined;
+    this.currentUser = new User;
+  }
   //public pageChange(event: PageChangeEvent): void {
   //  this.skip = event.skip;
   //  this.loadGridItems();

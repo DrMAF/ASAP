@@ -11,20 +11,58 @@
   </div>
   <div class="col-md-6">
     <h4>Users List</h4>
-    <ul class="list-group">
       @if (paginatedUsers?.items) {
-      @for (user of paginatedUsers?.items; track user.id) {
-      <li class="list-group-item" [class.active]="user.id == userIndex" (click)="setActiveUser(user, user.id)">
-        {{ user.firstName }} {{ user.lastName }}
-      </li>
-      } @empty {
-      <li>There are no items.</li>
+      <kendo-grid [data]="gridData" [navigable]="true" [selectable]="{ mode: 'single' }">
+        <kendo-grid-column field="firstName" title="First name"></kendo-grid-column>
+        <kendo-grid-column field="lastName" title="Last name"></kendo-grid-column>
+        <kendo-grid-column>
+          <ng-template kendoGridCellTemplate let-dataItem>
+            <button type="button" kendoButton [look]="'outline'" (click)="showDetails($event, dataItem)">Show details</button>
+          </ng-template>
+        </kendo-grid-column>
+      </kendo-grid>
       }
+      @else
+      {
+      <h1>There are no items.</h1>
       }
-    </ul>
 
   </div>
   <div class="col-md-6">
     <app-user-details [viewMode]="true" [itemsCount]="itemsCount" [currentUser]="currentUser"></app-user-details>
   </div>
 </div>
+
+
+
+<!--<ng-template kendoGridDetailTemplate let-dataItem>
+  <strong>Manager:</strong> {{ dataItem.id }}
+</ng-template>-->
+<!--<kendo-grid-column title="Custom">
+  <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+    <button type="button" class="k-button" (click)="showDetails($event, dataItem)">Open Popup</button>
+  </ng-template>
+</kendo-grid-column>-->
+<!--<kendo-grid [data]="gridData" [selectable]="{ mode: 'single' }" [navigable]="true" [height]="300">-->
+<!--<kendo-grid-checkbox-column [width]="40"></kendo-grid-checkbox-column>-->
+<!--<kendo-grid-column field="ProductName" title="Product Name"></kendo-grid-column>
+  <kendo-grid-column field="UnitsInStock" title="Units In Stock"></kendo-grid-column>
+  <kendo-grid-column field="UnitsOnOrder" title="Units On Order"></kendo-grid-column>
+  <kendo-grid-column field="ReorderLevel" title="Reorder Level"></kendo-grid-column>
+</kendo-grid>-->
+<!--<kendo-grid [data]="gridData" [height]="300" [selectable]="selectableSettings"
+            [cellSelected]="isCellSelected">
+  <kendo-grid-column field="ProductName" title="Product Name"></kendo-grid-column>
+  <kendo-grid-column field="UnitsInStock" title="Units In Stock"></kendo-grid-column>
+  <kendo-grid-column field="UnitsOnOrder" title="Units On Order"></kendo-grid-column>
+  <kendo-grid-column field="ReorderLevel" title="Reorder Level"></kendo-grid-column>
+</kendo-grid>-->
+<!--<kendo-popup style="width: calc(100% - 88px); z-index: 10002;"
+             popupClass="custom-popup"
+             [anchor]="anchorElement"
+             *ngIf="show">
+  Details for: {{ currentUser.firstName }}... custom content
+  <span class="k-icon k-i-close-outline k-i-x-outline"
+        style="position: absolute; right: 0;"
+        (click)="closePopup()"></span>
+</kendo-popup>-->
