@@ -1,5 +1,5 @@
 ﻿using Core.Entities;
-using Core.ViewModels;
+using Core.ViewModels.Users;
 using Microsoft.AspNetCore.Identity;
 
 namespace Core.Interfaces.Services

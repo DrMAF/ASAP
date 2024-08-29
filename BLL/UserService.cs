@@ -1,6 +1,6 @@
 ﻿using Core.Entities;
 using Core.Interfaces.Services;
-using Core.ViewModels;
+using Core.ViewModels.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
@@ -79,10 +79,10 @@ namespace BLL
                     LastName = model.LastName,
                     PhoneNumber = model.PhoneNumber,
                     Email = model.Email,
-                    UserName = model.Email
+                    UserName = model.Email,
                 };
 
-                var res = await _userManager.CreateAsync(user);
+                var res = await _userManager.CreateAsync(user, "string");
 
                 return res;
             }

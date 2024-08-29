@@ -1,16 +1,22 @@
 ﻿using BLL;
 using Core.Entities;
 using Core.Interfaces;
+using Core.Settings;
 using DAL;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace ASAP
 {
     public static class Startup
     {
-        public static IServiceCollection ConfigureAuthorization(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection ConfigureAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddIdentityApiEndpoints<User>().AddEntityFrameworkStores<AppDbContext>();
+            
+            services.Configure<AuthSettings>(configuration.GetSection("AuthSettings"));
 
             services.Configure<IdentityOptions>(options =>
             {
@@ -21,6 +27,20 @@ namespace ASAP
                 options.Password.RequiredLength = 0;
 
                 options.User.RequireUniqueEmail = true;
+            });
+
+            string secrt = configuration.GetSection("AuthSettings:TokenSecret").Value.ToString();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secrt)),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateIssuerSigningKey = true,
+                    ClockSkew = TimeSpan.Zero
+                };
             });
 
             return services;

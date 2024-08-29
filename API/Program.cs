@@ -6,6 +6,7 @@ using Messaging;
 using StockMarket.Bootstrapper;
 using API.HostedServices;
 using Serilog;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,10 +17,35 @@ string defaultConnection = builder.Configuration.GetConnectionString("DefaultCon
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(defaultConnection));
 
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Fill in token"
+    });
 
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new List<string>(){ }
+        }
+    });
+});
 builder.Services
-    .ConfigureAuthorization(builder.Configuration).AddBusinessServices()
+    .ConfigureAuthentication(builder.Configuration).AddBusinessServices()
     .AddPolygonProviderServices(builder.Configuration)
     .AddMessagingServices(builder.Configuration);
 
@@ -56,7 +82,8 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.MapGroup("api/users").MapAccount();
+app.MapGroup("api/auth").MapAuth();
+app.MapGroup("api/users").MapUsers();
 app.MapGroup("api/polygon").MapPolygon();
 
 app.Run();

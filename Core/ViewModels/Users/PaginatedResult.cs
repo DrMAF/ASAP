@@ -1,6 +1,4 @@
-﻿
-
-namespace Core.ViewModels
+﻿namespace Core.ViewModels.Users
 {
     public class PaginatedResult<T>
     {

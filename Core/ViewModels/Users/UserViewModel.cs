@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Core.ViewModels
+namespace Core.ViewModels.Users
 {
     public record UserModel
     {

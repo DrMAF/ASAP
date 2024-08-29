@@ -1,6 +1,7 @@
 ﻿using Core.Entities;
 using Core.Interfaces.Services;
-using Core.ViewModels;
+using Core.ViewModels.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,7 +9,7 @@ namespace API.Endpoints
 {
     public static class UsersEndpoints
     {
-        public static IEndpointRouteBuilder MapAccount(this IEndpointRouteBuilder endpoint)
+        public static IEndpointRouteBuilder MapUsers(this IEndpointRouteBuilder endpoint)
         {
             endpoint.MapGet("", GetUsers);
             endpoint.MapGet("getById", GetUserById);
@@ -19,6 +20,7 @@ namespace API.Endpoints
             return endpoint;
         }
 
+        [Authorize]
         private static IResult GetUsers(IUserService userService, string search = "")
         {
             //pageIndex = pageIndex < 1 ? 1 : pageIndex;
